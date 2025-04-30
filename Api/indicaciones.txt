@@ -1,0 +1,9 @@
+Para hacer consultas
+http://localhost:3000/api/mongo/nombre_consulta
+http://localhost:3000/api/mysql/nombre_consulta
+En mongo la conexion es localhost:27017
+El nombre del schema es clinica
+
+En mysql el nombre del schema también es clinica
+
+Recordar cargar el ddl que esta en este repositorio
