@@ -72,7 +72,6 @@ async function pacientesXhabitacion(req, res) {
       {
         $project: {
           _id: 0,
-          idHabitacion: "$_id",
           Habitacion: "$habitacionInfo.habitacion",
           totalPacientes: { $size: "$pacientesUnicos" }
         }
@@ -131,6 +130,7 @@ async function topEdadesAtendidas(req, res) {
           cantidad: { $sum: 1 }
         }
       },
+      
       { $sort: { cantidad: -1 } },  // Ordenar de mayor a menor
       { $limit: 5 }                 // Solo los top 5
     ]).toArray();
@@ -198,7 +198,6 @@ async function topHabitacionesMasUsadas(req, res) {
       {
         $project: {
           _id: 0,
-          idHabitacion: "$_id",
           Habitacion: "$habitacionInfo.habitacion",
           totalPacientes: "$pacientesUnicos"
         }
@@ -244,7 +243,6 @@ async function topHabitacionesMenosUsadas(req, res) {
       {
         $project: {
           _id: 0,
-          idHabitacion: "$_id",
           Habitacion: "$habitacionInfo.habitacion",
           totalPacientes: "$pacientesUnicos"
         }
@@ -285,7 +283,7 @@ async function diasMaspacientes(req, res) {
         }
       },
       { $sort: { totalPacientes: -1 } },  // Días con más pacientes primero
-      { $limit: 5 }                        // Top 5 si quieres limitar
+      { $limit: 1 }                        // Top 5 si quieres limitar
     ]).toArray();
     const elapsedMs = Date.now() - inicio;
     res.status(200).json({ resultado: result, tiempo: elapsedMs + ' ms' });

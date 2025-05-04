@@ -166,7 +166,7 @@ exports.getDiaConMasPacientes = async () => {
     const [results] = await pool.query(`
       SELECT 
         DATE(STR_TO_DATE(timestamp, '%m/%d/%Y %r')) AS dia, 
-        COUNT(DISTINCT idPaciente) AS cantidadPacientes
+        COUNT(idPaciente) AS cantidadPacientes
       FROM LOG_ACTIVIDAD
       GROUP BY dia
       ORDER BY cantidadPacientes DESC
