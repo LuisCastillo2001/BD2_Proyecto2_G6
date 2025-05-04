@@ -6,6 +6,7 @@ const { connectMongo } = require('../../db/mongo/connection');
  */
 async function pacientesXcategoria(req, res) {
   try {
+    const inicio = Date.now();
     const db = await connectMongo();
     const result = await db.collection('PACIENTE').aggregate([
       {
@@ -32,7 +33,8 @@ async function pacientesXcategoria(req, res) {
         $sort: { totalPacientes: -1 }
       }
     ]).toArray();
-    res.status(200).json(result);
+    const elapsedMs = Date.now() - inicio; 
+    res.status(200).json({ resultado: result, tiempo: elapsedMs + ' ms' });
   } catch (err) {
     console.error(err);
     res.status(500).send('Error en la consulta');
@@ -45,6 +47,7 @@ async function pacientesXcategoria(req, res) {
 */
 async function pacientesXhabitacion(req, res) {
   try {
+    const inicio = Date.now();
     const db = await connectMongo();
     const result = await db.collection('LOG_ACTIVIDAD').aggregate([
       // Agrupamos por idHabitacion y contamos pacientes únicos
@@ -78,7 +81,8 @@ async function pacientesXhabitacion(req, res) {
         $sort: {idHabitacion: 1}
       }
     ]).toArray();
-    res.status(200).json(result);
+    const elapsedMs = Date.now() - inicio;
+    res.status(200).json({ resultado: result, tiempo: elapsedMs + ' ms' });
   } catch (err) {
     console.error(err);
     res.status(500).send('Error en la consulta');
@@ -90,6 +94,7 @@ async function pacientesXhabitacion(req, res) {
  * y devuelve un arreglo con el género y la cantidad de pacientes
 */
 async function pacientesXgenero(req, res) {
+  const inicio = Date.now();
   try {
     const db = await connectMongo();
     const result = await db.collection('PACIENTE').aggregate([
@@ -103,7 +108,8 @@ async function pacientesXgenero(req, res) {
         $sort: { totalPacientes: -1 }
       }
     ]).toArray();
-    res.status(200).json(result);
+    const elapsedMs = Date.now() - inicio;
+    res.status(200).json({ resultado: result, tiempo: elapsedMs + ' ms' });
   } catch (err) {
     console.error(err);
     res.status(500).send('Error en la consulta');
@@ -115,6 +121,7 @@ async function pacientesXgenero(req, res) {
  * y devuelve un arreglo con la edad y la cantidad de pacientes
 */
 async function topEdadesAtendidas(req, res) {
+  const inicio = Date.now();
   try {
     const db = await connectMongo();
     const result = await db.collection('PACIENTE').aggregate([
@@ -127,7 +134,8 @@ async function topEdadesAtendidas(req, res) {
       { $sort: { cantidad: -1 } },  // Ordenar de mayor a menor
       { $limit: 5 }                 // Solo los top 5
     ]).toArray();
-    res.status(200).json(result);
+    const elapsedMs = Date.now() - inicio;
+    res.status(200).json({ resultado: result, tiempo: elapsedMs + ' ms' });
   } catch (err) {
     console.error(err);
     res.status(500).send('Error en la consulta');
@@ -139,6 +147,7 @@ async function topEdadesAtendidas(req, res) {
  * y devuelve un arreglo con la edad y la cantidad de pacientes
 */
 async function topMenosAtendidos(req, res) {
+  const inicio = Date.now();
   try {
     const db = await connectMongo();
     const result = await db.collection('PACIENTE').aggregate([
@@ -151,7 +160,8 @@ async function topMenosAtendidos(req, res) {
       { $sort: { cantidad: 1 } },  // Ordenar de menor a mayor
       { $limit: 5 }                // Solo los top 5
     ]).toArray();
-    res.status(200).json(result);
+    const elapsedMs = Date.now() - inicio;
+    res.status(200).json({ resultado: result, tiempo: elapsedMs + ' ms' });
   } catch (err) {
     console.error(err);
     res.status(500).send('Error en la consulta');
@@ -163,6 +173,7 @@ async function topMenosAtendidos(req, res) {
  * y devuelve un arreglo con la habitación y el total de pacientes
 */
 async function topHabitacionesMasUsadas(req, res) {
+  const inicio = Date.now();
   try {
     const db = await connectMongo();
     const result = await db.collection('LOG_ACTIVIDAD').aggregate([
@@ -195,7 +206,8 @@ async function topHabitacionesMasUsadas(req, res) {
       { $sort: { totalPacientes: -1 } },
       { $limit: 5 }
     ]).toArray();
-    res.status(200).json(result);
+    const elapsedMs = Date.now() - inicio;
+    res.status(200).json({ resultado: result, tiempo: elapsedMs + ' ms' });
   } catch (err) {
     console.error(err);
     res.status(500).send('Error en la consulta');
@@ -207,6 +219,7 @@ async function topHabitacionesMasUsadas(req, res) {
   * y devuelve un arreglo con la habitación y el total de pacientes
 */
 async function topHabitacionesMenosUsadas(req, res) {
+  const inicio = Date.now();
   try {
     const db = await connectMongo();
     const result = await db.collection('LOG_ACTIVIDAD').aggregate([
@@ -239,7 +252,8 @@ async function topHabitacionesMenosUsadas(req, res) {
       { $sort: { totalPacientes: 1 } },
       { $limit: 5 }
     ]).toArray();
-    res.status(200).json(result);
+    const elapsedMs = Date.now() - inicio;
+    res.status(200).json({ resultado: result, tiempo: elapsedMs + ' ms' });
   } catch (err) {
     console.error(err);
     res.status(500).send('Error en la consulta');
@@ -247,6 +261,7 @@ async function topHabitacionesMenosUsadas(req, res) {
 }
 
 async function diasMaspacientes(req, res) {
+  const inicio = Date.now();
   try {
     const db = await connectMongo();
     const result = await db.collection('LOG_ACTIVIDAD').aggregate([
@@ -272,7 +287,8 @@ async function diasMaspacientes(req, res) {
       { $sort: { totalPacientes: -1 } },  // Días con más pacientes primero
       { $limit: 5 }                        // Top 5 si quieres limitar
     ]).toArray();
-    res.status(200).json(result);
+    const elapsedMs = Date.now() - inicio;
+    res.status(200).json({ resultado: result, tiempo: elapsedMs + ' ms' });
   } catch (err) {
     console.error(err);
     res.status(500).send('Error en la consulta');
